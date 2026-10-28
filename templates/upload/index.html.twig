@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nueva remisión{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <h1>Subir archivo Excel</h1>
+        <p class="muted">
+            Cada hoja no vacía del archivo se importa como una remisión independiente.
+            Se esperan las columnas: <code>Adquisición</code>, <code>Título</code>,
+            <code>Autor</code>, <code>Sistema</code>, <code>Clasificación</code>.
+        </p>
+        <form method="post" action="{{ path('app_upload') }}" enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="{{ csrf_token('submit') }}">
+            <div class="field">
+                <label for="archivo">Archivo Excel</label>
+                <input type="file" id="archivo" name="archivo" accept=".xlsx" required>
+            </div>
+            <button class="btn" type="submit">Importar</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h1>Crear remisión manual</h1>
+        <p class="muted">Para agregar tarjetas que no vienen de ningún Excel.</p>
+        <form method="post" action="{{ path('app_remision_nueva') }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('submit') }}">
+            <div style="display:flex; gap:1rem; align-items:flex-end; flex-wrap:wrap;">
+                <div class="field" style="flex:1; min-width:220px; margin-bottom:0;">
+                    <label for="nombre">Nombre de la remisión</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="p. ej. Donación manual sept. 2026" required>
+                </div>
+                <div class="field" style="width:160px; margin-bottom:0;">
+                    <label for="prefijoAdquisicion2">Prefijo</label>
+                    <input type="text" id="prefijoAdquisicion2" name="prefijoAdquisicion" value="GM(1)">
+                </div>
+                <button class="btn" type="submit">Crear</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

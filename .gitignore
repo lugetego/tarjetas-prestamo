@@ -8,3 +8,8 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+###> app ###
+/storage/uploads/*
+!/storage/uploads/.gitkeep
+###< app ###

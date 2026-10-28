@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Remisión(es) creada(s){% endblock %}
+
+{% block body %}
+    <div class="card">
+        <h1>Listo</h1>
+        {% if remisiones is empty %}
+            <p class="muted">No se encontraron las remisiones solicitadas.</p>
+        {% else %}
+            <p class="muted">Ya puedes imprimir las tarjetas o revisarlas/editarlas antes de imprimir.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Remisión</th>
+                        <th># tarjetas</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for remision in remisiones %}
+                        <tr>
+                            <td>{{ remision.nombre }}</td>
+                            <td>{{ remision.tarjetas|length }}</td>
+                            <td><a class="btn" href="{{ path('app_remision_pdf', {id: remision.id}) }}" target="_blank">Imprimir / Descargar PDF</a></td>
+                            <td><a class="btn secondary" href="{{ path('app_remision_show', {id: remision.id}) }}">Ver / editar</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        <div style="margin-top:1.5rem;">
+            <a class="btn secondary" href="{{ path('app_upload') }}">Subir otra remisión</a>
+            <a class="btn secondary" href="{{ path('app_historial') }}">Ir al historial</a>
+        </div>
+    </div>
+{% endblock %}

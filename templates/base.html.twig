@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Tarjetas de préstamo{% endblock %}</title>
+        <style>
+            :root { color-scheme: light; }
+            * { box-sizing: border-box; }
+            body {
+                margin: 0;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+                background: #f4f5f7;
+                color: #1c1e21;
+            }
+            header {
+                background: #1f2a44;
+                color: #fff;
+                padding: 0.9rem 1.5rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            header a { color: #fff; text-decoration: none; }
+            header .brand { font-weight: 600; }
+            header nav a { margin-left: 1.2rem; opacity: 0.9; }
+            header nav a:hover { opacity: 1; text-decoration: underline; }
+            main { max-width: 960px; margin: 2rem auto; padding: 0 1.5rem; }
+            .card {
+                background: #fff;
+                border-radius: 8px;
+                padding: 1.5rem;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+                margin-bottom: 1.5rem;
+            }
+            h1 { font-size: 1.4rem; margin-top: 0; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { text-align: left; padding: 0.55rem 0.6rem; border-bottom: 1px solid #eaecef; font-size: 0.92rem; }
+            th { color: #5a6270; font-weight: 600; }
+            .btn {
+                display: inline-block;
+                background: #2e5cff;
+                color: #fff;
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+                text-decoration: none;
+                cursor: pointer;
+                font-size: 0.9rem;
+            }
+            .btn:hover { background: #1e46d6; }
+            .btn.secondary { background: #e9ebef; color: #1c1e21; }
+            .btn.secondary:hover { background: #d9dce2; }
+            input[type=text], input[type=email], input[type=password], input[type=file] {
+                padding: 0.5rem;
+                border: 1px solid #d7dae0;
+                border-radius: 6px;
+                width: 100%;
+                font-size: 0.92rem;
+            }
+            label { display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: #5a6270; }
+            .field { margin-bottom: 1rem; }
+            .flash-error {
+                background: #fdecea;
+                color: #a3221b;
+                padding: 0.6rem 0.9rem;
+                border-radius: 6px;
+                margin-bottom: 1rem;
+                font-size: 0.9rem;
+            }
+            .muted { color: #8a8f98; font-size: 0.85rem; }
+        </style>
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        <header>
+            <div style="display:flex; align-items:baseline; gap:0.6rem;">
+                <a class="brand" href="{{ path('app_historial') }}">Tarjetas de préstamo</a>
+                {% if app.user %}
+                    <span style="opacity:0.75; font-size:0.85rem;">{{ app.user.biblioteca.nombre }}</span>
+                {% endif %}
+            </div>
+            {% if app.user %}
+                <nav>
+                    <a href="{{ path('app_upload') }}">Nueva remisión</a>
+                    <a href="{{ path('app_historial') }}">Historial</a>
+                    <a href="{{ path('app_logout') }}">Salir ({{ app.user.userIdentifier }})</a>
+                </nav>
+            {% endif %}
+        </header>
+        <main>
+            {% for message in app.flashes('success') %}
+                <div class="card" style="background:#eafbea;color:#1c6b1c;">{{ message }}</div>
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+                <div class="flash-error">{{ message }}</div>
+            {% endfor %}
+            {% block body %}{% endblock %}
+        </main>
+    </body>
+</html>

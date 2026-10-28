@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ remision.nombre }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <h1>{{ remision.nombre }}</h1>
+        <p class="muted">
+            {% if remision.archivoOriginal %}
+                Subida el {{ remision.creadoEn|date('d/m/Y H:i') }} · archivo: {{ remision.archivoOriginal }}
+            {% else %}
+                Creada manualmente el {{ remision.creadoEn|date('d/m/Y H:i') }}
+            {% endif %}
+        </p>
+        <a class="btn" href="{{ path('app_remision_pdf', {id: remision.id}) }}" target="_blank">Descargar PDF</a>
+        <a class="btn secondary" href="{{ path('app_historial') }}">Volver al historial</a>
+    </div>
+
+    <div class="card">
+        <form method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token('submit') }}">
+            <div class="field" style="max-width:220px;">
+                <label for="prefijoAdquisicion">Prefijo de adquisición</label>
+                <input type="text" id="prefijoAdquisicion" name="prefijoAdquisicion" value="{{ remision.prefijoAdquisicion }}">
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Clasificación</th>
+                        <th>Adquisición</th>
+                        <th>Autor</th>
+                        <th>Título</th>
+                        <th>No. sistema</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tarjeta in remision.tarjetas %}
+                        <tr>
+                            <td><input type="text" name="tarjetas[{{ tarjeta.id }}][clasificacion]" value="{{ tarjeta.clasificacion }}"></td>
+                            <td><input type="text" name="tarjetas[{{ tarjeta.id }}][adquision]" value="{{ tarjeta.adquision }}"></td>
+                            <td><input type="text" name="tarjetas[{{ tarjeta.id }}][autor]" value="{{ tarjeta.autor }}"></td>
+                            <td><input type="text" name="tarjetas[{{ tarjeta.id }}][titulo]" value="{{ tarjeta.titulo }}"></td>
+                            <td><input type="text" name="tarjetas[{{ tarjeta.id }}][sistema]" value="{{ tarjeta.sistema }}"></td>
+                            <td style="text-align:center;"><input type="checkbox" name="eliminar[]" value="{{ tarjeta.id }}"></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div style="margin-top:1rem;">
+                <button class="btn" type="submit">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card">
+        <h1>Agregar tarjeta manualmente</h1>
+        <p class="muted">Para un libro que no viene en ningún Excel: llena estos campos y se agrega a esta remisión.</p>
+        <form method="post" action="{{ path('app_tarjeta_agregar', {id: remision.id}) }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('submit') }}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Clasificación</th>
+                        <th>Adquisición</th>
+                        <th>Autor</th>
+                        <th>Título</th>
+                        <th>No. sistema</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" name="clasificacion"></td>
+                        <td><input type="text" name="adquision"></td>
+                        <td><input type="text" name="autor"></td>
+                        <td><input type="text" name="titulo"></td>
+                        <td><input type="text" name="sistema"></td>
+                        <td><button class="btn" type="submit">Agregar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+{% endblock %}

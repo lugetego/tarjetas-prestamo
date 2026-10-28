@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            size: 216pt 360pt;
+            margin: 0;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 10pt;
+            color: #000;
+        }
+        .tarjeta {
+            width: 215pt;
+            /* dompdf no respeta box-sizing:border-box para height+padding;
+               326pt de contenido + 32pt de padding = 358pt total */
+            height: 326pt;
+            padding: 16pt 18pt;
+            position: relative;
+        }
+        .salto {
+            page-break-after: always;
+        }
+        .fila-superior {
+            position: relative;
+            height: 11pt;
+            font-size: 9pt;
+        }
+        .fila-superior .izquierda {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 90pt;
+            text-align: left;
+        }
+        .fila-superior .derecha {
+            position: absolute;
+            left: 90pt;
+            top: 0;
+            width: 90pt;
+            text-align: right;
+        }
+        .autor {
+            font-weight: bold;
+            margin-top: 22pt;
+            width: 179pt;
+            overflow-wrap: break-word;
+        }
+        .titulo {
+            margin-top: 12pt;
+            width: 179pt;
+            overflow-wrap: break-word;
+        }
+        .sistema {
+            position: absolute;
+            top: 338.5pt;
+            left: 18pt;
+            width: 180pt;
+            font-size: 8pt;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+{% for tarjeta in tarjetas %}
+    <div class="tarjeta{{ not loop.last ? ' salto' : '' }}">
+        <div class="fila-superior">
+            <div class="izquierda">{{ tarjeta.clasificacion }}</div>
+            <div class="derecha">{{ remision.prefijoAdquisicion }}-{{ tarjeta.adquision }}</div>
+        </div>
+        <div class="autor">{{ tarjeta.autor }}</div>
+        <div class="titulo">{{ tarjeta.titulo }}</div>
+        <div class="sistema">{{ tarjeta.sistema }}</div>
+    </div>
+{% endfor %}
+</body>
+</html>

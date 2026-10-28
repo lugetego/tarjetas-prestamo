@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Historial{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <h1>Historial de remisiones</h1>
+
+        {% if remisiones is empty %}
+            <p class="muted">Aún no se ha subido ninguna remisión. <a href="{{ path('app_upload') }}">Sube la primera</a>.</p>
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Remisión</th>
+                        <th>Prefijo</th>
+                        <th># tarjetas</th>
+                        <th>Fecha</th>
+                        <th>Archivo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for remision in remisiones %}
+                        <tr>
+                            <td><a href="{{ path('app_remision_show', {id: remision.id}) }}">{{ remision.nombre }}</a></td>
+                            <td>{{ remision.prefijoAdquisicion }}</td>
+                            <td>{{ remision.tarjetas|length }}</td>
+                            <td>{{ remision.creadoEn|date('d/m/Y H:i') }}</td>
+                            <td class="muted">{{ remision.archivoOriginal }}</td>
+                            <td style="white-space:nowrap;">
+                                <a class="btn secondary" href="{{ path('app_remision_pdf', {id: remision.id}) }}" target="_blank">PDF</a>
+                                <form method="post" action="{{ path('app_remision_eliminar', {id: remision.id}) }}" style="display:inline;" onsubmit="return confirm('¿Eliminar la remisión &quot;{{ remision.nombre|e('js') }}&quot; y sus {{ remision.tarjetas|length }} tarjeta(s)? Esta acción no se puede deshacer.');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('submit') }}">
+                                    <button class="btn secondary" type="submit" style="color:#a3221b;">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}
