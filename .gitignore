@@ -12,4 +12,5 @@
 ###> app ###
 /storage/uploads/*
 !/storage/uploads/.gitkeep
+/.idea/
 ###< app ###
