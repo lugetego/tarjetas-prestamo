@@ -74,7 +74,10 @@
     </head>
     <body>
         <header>
-            <div style="display:flex; align-items:baseline; gap:0.6rem;">
+            <div style="display:flex; align-items:center; gap:0.9rem;">
+                <img src="/assets/branding/unam.png" alt="Escudo UNAM" style="height:32px;width:auto;">
+                <img src="/assets/branding/ccm.png" alt="Centro de Ciencias Matemáticas" style="height:20px;width:auto;">
+                <div style="width:1px; align-self:stretch; background:rgba(255,255,255,0.25);"></div>
                 <a class="brand" href="{{ path('app_historial') }}">Tarjetas de préstamo</a>
                 {% if app.user %}
                     <span style="opacity:0.75; font-size:0.85rem;">{{ app.user.biblioteca.nombre }}</span>
