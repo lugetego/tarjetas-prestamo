@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ayuda{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <h1>Qué es este sistema</h1>
+        <p>
+            Reemplaza al mail merge de Microsoft Publisher que se usaba para imprimir las fichas
+            bibliográficas (tarjetas de 3×5") de préstamo. Permite importar los datos desde un Excel
+            o capturarlos a mano, revisarlos y corregirlos antes de imprimir, y descargar un PDF listo
+            para las tarjetas físicas. Cada biblioteca ve y administra solo sus propias remisiones.
+        </p>
+    </div>
+
+    <div class="card">
+        <h1>Cómo entrar</h1>
+        <p>
+            Entra a la <a href="{{ path('app_login') }}">página de inicio de sesión</a> con el usuario
+            y la contraseña que te dio el administrador del sistema. Las cuentas no se crean solas desde
+            la página: si no tienes una, pide que te den de alta indicando tu nombre de usuario y a qué
+            biblioteca perteneces.
+        </p>
+    </div>
+
+    <div class="card">
+        <h1>Subir un archivo Excel</h1>
+        <p>
+            Desde "Nueva remisión", en "Subir archivo Excel" selecciona tu <code>.xlsx</code> (máximo
+            10 MB). Cada hoja no vacía se importa como una remisión independiente. Se esperan estas
+            columnas en cada hoja (sin importar mayúsculas o acentos):
+        </p>
+        <ul>
+            <li>Adquisición</li>
+            <li>Título</li>
+            <li>Autor</li>
+            <li>Sistema</li>
+            <li>Clasificación</li>
+        </ul>
+        <p>Las filas en blanco se ignoran automáticamente, no generan tarjetas vacías.</p>
+    </div>
+
+    <div class="card">
+        <h1>Crear una remisión manual</h1>
+        <p>
+            Para fichas que no vienen de ningún Excel, usa "Crear remisión manual": dale un nombre
+            (por ejemplo "Donación manual nov. 2026") y un prefijo de adquisición (por defecto
+            <code>GM(1)</code>). Ya creada, entra a su detalle y usa "Agregar tarjeta" para capturar
+            cada ficha una por una: clasificación, adquisición, autor, título y sistema.
+        </p>
+    </div>
+
+    <div class="card">
+        <h1>Revisar y corregir antes de imprimir</h1>
+        <p>
+            Dentro de cada remisión puedes editar cualquier dato directamente en la tabla —por si hubo
+            un error de captura o de importación— y quitar tarjetas sueltas que no correspondan, todo
+            antes de generar el PDF. Guarda los cambios con el botón correspondiente antes de salir de
+            la página.
+        </p>
+    </div>
+
+    <div class="card">
+        <h1>Descargar e imprimir el PDF</h1>
+        <p>
+            Con el botón "PDF" se genera un archivo listo para imprimir, una tarjeta por página, en el
+            tamaño exacto de 3×5 pulgadas (7.62 × 12.7 cm) —el mismo que usaban las tarjetas físicas con
+            Publisher. Al imprimir, asegúrate de usar "tamaño real" o 100% de escala, sin "ajustar a la
+            página", para que coincida con el tamaño de la tarjeta.
+        </p>
+    </div>
+
+    <div class="card">
+        <h1>Historial de remisiones</h1>
+        <p>
+            "Historial" lista todas las remisiones de tu biblioteca, con fecha, número de tarjetas y el
+            archivo original (si vino de un Excel). Desde ahí puedes:
+        </p>
+        <ul>
+            <li>Volver a descargar el PDF de cualquier remisión ya creada.</li>
+            <li>Eliminarla por completo (pide confirmación y borra también todas sus tarjetas —no se puede deshacer).</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h1>Cambiar tu contraseña</h1>
+        <p>
+            Desde el menú superior, en "Cambiar contraseña", captura tu contraseña actual y la nueva
+            (dos veces, para confirmarla). La nueva contraseña debe tener al menos 8 caracteres.
+        </p>
+    </div>
+
+    <div class="card">
+        <h1>¿Problemas o dudas?</h1>
+        <p>
+            Si algo no funciona como se espera, si necesitas una cuenta nueva, o si tu biblioteca aún no
+            está dada de alta en el sistema, contacta al administrador del sistema.
+        </p>
+    </div>
+{% endblock %}
