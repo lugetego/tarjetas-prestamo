@@ -25,6 +25,15 @@ class UploadController extends AbstractController
         CsrfTokenManagerInterface $csrfTokenManager,
         #[Autowire('%kernel.project_dir%')] string $projectDir,
     ): Response {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($user->getBiblioteca() === null) {
+            $this->addFlash('error', 'Tu cuenta no pertenece a una biblioteca; no puede crear remisiones.');
+
+            return $this->redirectToRoute('app_historial');
+        }
+
         if ($request->isMethod('POST')) {
             if (!$csrfTokenManager->isTokenValid(new CsrfToken('submit', $request->request->get('_token')))) {
                 throw $this->createAccessDeniedException('Token CSRF inválido.');
@@ -51,9 +60,6 @@ class UploadController extends AbstractController
             }
 
             try {
-                /** @var User $user */
-                $user = $this->getUser();
-
                 $nombreOriginal = $archivo->getClientOriginalName();
                 $nombreGuardado = sprintf('%s-%s', uniqid(), preg_replace('/[^A-Za-z0-9_.-]+/', '-', $nombreOriginal));
                 $archivo->move($projectDir.'/storage/uploads', $nombreGuardado);

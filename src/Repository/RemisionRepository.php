@@ -27,4 +27,13 @@ class RemisionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /** @return Remision[] */
+    public function findAllOrderedByFecha(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->orderBy('r.creadoEn', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -27,24 +27,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private Biblioteca $biblioteca;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Biblioteca $biblioteca = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBiblioteca(): Biblioteca
+    public function getBiblioteca(): ?Biblioteca
     {
         return $this->biblioteca;
     }
 
-    public function setBiblioteca(Biblioteca $biblioteca): static
+    public function setBiblioteca(?Biblioteca $biblioteca): static
     {
         $this->biblioteca = $biblioteca;
 
         return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array('ROLE_ADMIN', $this->getRoles(), true);
     }
 
     public function getUsername(): string

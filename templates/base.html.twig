@@ -83,12 +83,14 @@
                 <div style="width:1px; align-self:stretch; background:rgba(255,255,255,0.25);"></div>
                 <a class="brand" href="{{ path('app_historial') }}">Tarjetas de préstamo</a>
                 {% if app.user %}
-                    <span style="opacity:0.75; font-size:0.85rem;">{{ app.user.biblioteca.nombre }}</span>
+                    <span style="opacity:0.75; font-size:0.85rem;">{{ app.user.biblioteca ? app.user.biblioteca.nombre : 'Administrador' }}</span>
                 {% endif %}
             </div>
             {% if app.user %}
                 <nav>
-                    <a href="{{ path('app_upload') }}">Nueva remisión</a>
+                    {% if app.user.biblioteca %}
+                        <a href="{{ path('app_upload') }}">Nueva remisión</a>
+                    {% endif %}
                     <a href="{{ path('app_historial') }}">Historial</a>
                     <a href="{{ path('app_cambiar_password') }}">Cambiar contraseña</a>
                     <a href="{{ path('app_logout') }}">Salir ({{ app.user.userIdentifier }})</a>

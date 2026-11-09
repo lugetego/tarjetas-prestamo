@@ -17,6 +17,15 @@ class CrearRemisionController extends AbstractController
     #[IsCsrfTokenValid('submit', tokenKey: '_token')]
     public function __invoke(Request $request, EntityManagerInterface $entityManager): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($user->getBiblioteca() === null) {
+            $this->addFlash('error', 'Tu cuenta no pertenece a una biblioteca; no puede crear remisiones.');
+
+            return $this->redirectToRoute('app_historial');
+        }
+
         $nombre = trim((string) $request->request->get('nombre'));
 
         if ($nombre === '') {
@@ -24,9 +33,6 @@ class CrearRemisionController extends AbstractController
 
             return $this->redirectToRoute('app_upload');
         }
-
-        /** @var User $user */
-        $user = $this->getUser();
 
         $remision = new Remision();
         $remision->setNombre($nombre);

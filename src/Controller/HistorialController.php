@@ -16,8 +16,12 @@ class HistorialController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
+        $remisiones = $user->isAdmin()
+            ? $remisionRepository->findAllOrderedByFecha()
+            : $remisionRepository->findByBibliotecaOrderedByFecha($user->getBiblioteca());
+
         return $this->render('historial/index.html.twig', [
-            'remisiones' => $remisionRepository->findByBibliotecaOrderedByFecha($user->getBiblioteca()),
+            'remisiones' => $remisiones,
         ]);
     }
 }

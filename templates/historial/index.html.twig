@@ -7,12 +7,17 @@
         <h1>Historial de remisiones</h1>
 
         {% if remisiones is empty %}
-            <p class="muted">Aún no se ha subido ninguna remisión. <a href="{{ path('app_upload') }}">Sube la primera</a>.</p>
+            {% if app.user.biblioteca %}
+                <p class="muted">Aún no se ha subido ninguna remisión. <a href="{{ path('app_upload') }}">Sube la primera</a>.</p>
+            {% else %}
+                <p class="muted">Aún no hay remisiones de ninguna biblioteca.</p>
+            {% endif %}
         {% else %}
             <table>
                 <thead>
                     <tr>
                         <th>Remisión</th>
+                        {% if app.user.admin %}<th>Biblioteca</th>{% endif %}
                         <th>Prefijo</th>
                         <th># tarjetas</th>
                         <th>Fecha</th>
@@ -24,6 +29,7 @@
                     {% for remision in remisiones %}
                         <tr>
                             <td><a href="{{ path('app_remision_show', {id: remision.id}) }}">{{ remision.nombre }}</a></td>
+                            {% if app.user.admin %}<td class="muted">{{ remision.biblioteca.nombre }}</td>{% endif %}
                             <td>{{ remision.prefijoAdquisicion }}</td>
                             <td>{{ remision.tarjetas|length }}</td>
                             <td>{{ remision.creadoEn|date('d/m/Y H:i') }}</td>

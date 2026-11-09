@@ -22,9 +22,13 @@ class RemisionVoter extends Voter
             return false;
         }
 
+        if ($user->isAdmin()) {
+            return true;
+        }
+
         /** @var Remision $remision */
         $remision = $subject;
 
-        return $remision->getBiblioteca()->getId() === $user->getBiblioteca()->getId();
+        return $user->getBiblioteca() !== null && $remision->getBiblioteca()->getId() === $user->getBiblioteca()->getId();
     }
 }
