@@ -8,7 +8,7 @@
 
         {% if remisiones is empty %}
             {% if app.user.biblioteca %}
-                <p class="muted">Aún no se ha subido ninguna remisión. <a href="{{ path('app_upload') }}">Sube la primera</a>.</p>
+                <p class="muted">Aún no se ha subido ninguna remisión. <a href="{{ path('app_upload') }}"><i class="bi bi-file-earmark-plus"></i>Sube la primera</a>.</p>
             {% else %}
                 <p class="muted">Aún no hay remisiones de ninguna biblioteca.</p>
             {% endif %}
@@ -35,10 +35,10 @@
                             <td>{{ remision.creadoEn|date('d/m/Y H:i') }}</td>
                             <td class="muted">{{ remision.archivoOriginal }}</td>
                             <td style="white-space:nowrap;">
-                                <a class="btn secondary" href="{{ path('app_remision_pdf', {id: remision.id}) }}" target="_blank">PDF</a>
+                                <a class="btn secondary" href="{{ path('app_remision_pdf', {id: remision.id}) }}" target="_blank"><i class="bi bi-file-earmark-pdf"></i>PDF</a>
                                 <form method="post" action="{{ path('app_remision_eliminar', {id: remision.id}) }}" style="display:inline;" onsubmit="return confirm('¿Eliminar la remisión &quot;{{ remision.nombre|e('js') }}&quot; y sus {{ remision.tarjetas|length }} tarjeta(s)? Esta acción no se puede deshacer.');">
                                     <input type="hidden" name="_token" value="{{ csrf_token('submit') }}">
-                                    <button class="btn secondary" type="submit" style="color:#a3221b;">Eliminar</button>
+                                    <button class="btn secondary" type="submit" style="color:#a3221b;"><i class="bi bi-trash"></i>Eliminar</button>
                                 </form>
                             </td>
                         </tr>
