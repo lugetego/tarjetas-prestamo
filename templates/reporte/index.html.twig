@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reportes de uso{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <h1>Uso por biblioteca</h1>
+        {% if filas is empty %}
+            <p class="muted">Todavía no hay bibliotecas dadas de alta.</p>
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Biblioteca</th>
+                        <th>Remisiones</th>
+                        <th>Tarjetas generadas</th>
+                        <th>Inicios de sesión</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fila in filas %}
+                        <tr>
+                            <td>{{ fila.nombre }}</td>
+                            <td>{{ fila.numRemisiones }}</td>
+                            <td>{{ fila.numTarjetas }}</td>
+                            <td>{{ fila.numInicios }}</td>
+                        </tr>
+                    {% endfor %}
+                    {% if numInicios_admin > 0 %}
+                        <tr>
+                            <td class="muted">Administradores</td>
+                            <td class="muted">—</td>
+                            <td class="muted">—</td>
+                            <td>{{ numInicios_admin }}</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h1>Inicios de sesión por usuario</h1>
+        {% if usuarios is empty %}
+            <p class="muted">Todavía no hay inicios de sesión registrados.</p>
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Biblioteca</th>
+                        <th>Inicios de sesión</th>
+                        <th>Último acceso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.username }}</td>
+                            <td class="muted">{{ usuario.biblioteca ?? 'Administrador' }}</td>
+                            <td>{{ usuario.total }}</td>
+                            <td class="muted">{{ usuario.ultimo|date('d/m/Y H:i') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

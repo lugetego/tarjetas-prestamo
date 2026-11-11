@@ -36,4 +36,22 @@ class RemisionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /** @return array<int, array{bibliotecaId: int, numRemisiones: int, numTarjetas: int}> */
+    public function contarUsoPorBiblioteca(): array
+    {
+        $filas = $this->createQueryBuilder('r')
+            ->select('IDENTITY(r.biblioteca) AS bibliotecaId, COUNT(DISTINCT r.id) AS numRemisiones, COUNT(t.id) AS numTarjetas')
+            ->leftJoin('r.tarjetas', 't')
+            ->groupBy('r.biblioteca')
+            ->getQuery()
+            ->getArrayResult();
+
+        foreach ($filas as &$fila) {
+            $fila['numRemisiones'] = (int) $fila['numRemisiones'];
+            $fila['numTarjetas'] = (int) $fila['numTarjetas'];
+        }
+
+        return $filas;
+    }
 }
