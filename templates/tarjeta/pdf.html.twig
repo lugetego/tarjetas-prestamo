@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <style>
         @page {
-            size: 216pt 360pt;
+            size: {{ anchoPt }}pt {{ altoPt }}pt;
             margin: 0;
         }
         * { box-sizing: border-box; }
@@ -15,11 +15,11 @@
             color: #000;
         }
         .tarjeta {
-            width: 215pt;
+            width: {{ (215 * escalaX)|round(1) }}pt;
             /* dompdf no respeta box-sizing:border-box para height+padding;
-               326pt de contenido + 32pt de padding = 358pt total */
-            height: 326pt;
-            padding: 16pt 18pt;
+               326pt de contenido + 32pt de padding = 358pt total (tamaño de referencia 216x360) */
+            height: {{ (326 * escalaY)|round(1) }}pt;
+            padding: {{ (16 * escalaY)|round(1) }}pt {{ (18 * escalaX)|round(1) }}pt;
             position: relative;
         }
         .salto {
@@ -27,39 +27,39 @@
         }
         .fila-superior {
             position: relative;
-            height: 11pt;
+            height: {{ (11 * escalaY)|round(1) }}pt;
             font-size: 9pt;
         }
         .fila-superior .izquierda {
             position: absolute;
             left: 0;
             top: 0;
-            width: 90pt;
+            width: {{ (90 * escalaX)|round(1) }}pt;
             text-align: left;
         }
         .fila-superior .derecha {
             position: absolute;
-            left: 90pt;
+            left: {{ (90 * escalaX)|round(1) }}pt;
             top: 0;
-            width: 90pt;
+            width: {{ (90 * escalaX)|round(1) }}pt;
             text-align: right;
         }
         .autor {
             font-weight: bold;
-            margin-top: 22pt;
-            width: 179pt;
+            margin-top: {{ (22 * escalaY)|round(1) }}pt;
+            width: {{ (179 * escalaX)|round(1) }}pt;
             overflow-wrap: break-word;
         }
         .titulo {
-            margin-top: 12pt;
-            width: 179pt;
+            margin-top: {{ (12 * escalaY)|round(1) }}pt;
+            width: {{ (179 * escalaX)|round(1) }}pt;
             overflow-wrap: break-word;
         }
         .sistema {
             position: absolute;
-            top: 338.5pt;
-            left: 18pt;
-            width: 180pt;
+            top: {{ (338.5 * escalaY)|round(1) }}pt;
+            left: {{ (18 * escalaX)|round(1) }}pt;
+            width: {{ (180 * escalaX)|round(1) }}pt;
             font-size: 8pt;
             text-align: right;
         }

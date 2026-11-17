@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Biblioteca;
 use App\Entity\Remision;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -15,9 +16,17 @@ class TarjetaPdfBuilder
 
     public function generar(Remision $remision): string
     {
+        $biblioteca = $remision->getBiblioteca();
+        $anchoPt = $biblioteca->getAnchoTarjetaPt();
+        $altoPt = $biblioteca->getAltoTarjetaPt();
+
         $html = $this->twig->render('tarjeta/pdf.html.twig', [
             'remision' => $remision,
             'tarjetas' => $remision->getTarjetas(),
+            'anchoPt' => $anchoPt,
+            'altoPt' => $altoPt,
+            'escalaX' => $anchoPt / Biblioteca::ANCHO_TARJETA_PT_DEFAULT,
+            'escalaY' => $altoPt / Biblioteca::ALTO_TARJETA_PT_DEFAULT,
         ]);
 
         $options = new Options();
