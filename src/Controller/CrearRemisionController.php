@@ -34,9 +34,11 @@ class CrearRemisionController extends AbstractController
             return $this->redirectToRoute('app_upload');
         }
 
+        $prefijoPredeterminado = $user->getBiblioteca()->getPrefijoAdquisicionPredeterminado();
+
         $remision = new Remision();
         $remision->setNombre($nombre);
-        $remision->setPrefijoAdquisicion(trim((string) $request->request->get('prefijoAdquisicion', 'GM(1)')) ?: 'GM(1)');
+        $remision->setPrefijoAdquisicion(trim((string) $request->request->get('prefijoAdquisicion', $prefijoPredeterminado)) ?: $prefijoPredeterminado);
         $remision->setArchivoOriginal(null);
         $remision->setBiblioteca($user->getBiblioteca());
 

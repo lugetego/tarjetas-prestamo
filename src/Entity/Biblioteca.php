@@ -28,6 +28,11 @@ class Biblioteca
     #[ORM\Column(nullable: true)]
     private ?int $altoTarjetaPt = null;
 
+    public const PREFIJO_ADQUISICION_DEFAULT = 'GM(1)';
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $prefijoAdquisicionPredeterminado = null;
+
     public function __construct()
     {
         $this->creadoEn = new \DateTimeImmutable();
@@ -75,6 +80,18 @@ class Biblioteca
     public function setAltoTarjetaPt(?int $altoTarjetaPt): static
     {
         $this->altoTarjetaPt = $altoTarjetaPt;
+
+        return $this;
+    }
+
+    public function getPrefijoAdquisicionPredeterminado(): string
+    {
+        return $this->prefijoAdquisicionPredeterminado ?? self::PREFIJO_ADQUISICION_DEFAULT;
+    }
+
+    public function setPrefijoAdquisicionPredeterminado(?string $prefijoAdquisicionPredeterminado): static
+    {
+        $this->prefijoAdquisicionPredeterminado = $prefijoAdquisicionPredeterminado;
 
         return $this;
     }

@@ -45,6 +45,7 @@ class XlsxImporter
             $remision->setNombre($sheet->getTitle());
             $remision->setArchivoOriginal($nombreArchivoOriginal);
             $remision->setBiblioteca($biblioteca);
+            $remision->setPrefijoAdquisicion($biblioteca->getPrefijoAdquisicionPredeterminado());
 
             foreach ($tarjetas as $tarjeta) {
                 $remision->addTarjeta($tarjeta);
