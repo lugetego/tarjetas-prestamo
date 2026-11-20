@@ -19,6 +19,9 @@ class TarjetaPdfBuilder
     /** Ancho promedio estimado de un carácter en negritas, como fracción del tamaño de fuente. */
     private const FACTOR_ANCHO_CARACTER = 0.5;
 
+    /** Margen de seguridad (pt, a escala de referencia) para que el prefijo+adquisición nunca rebase el borde de la tarjeta. */
+    private const MARGEN_SEGURIDAD_DERECHA_PT = 3.0;
+
     public function __construct(private readonly Environment $twig)
     {
     }
@@ -48,7 +51,7 @@ class TarjetaPdfBuilder
             'autorFontSizes' => $autorFontSizes,
             'autorMarginTopPt' => $biblioteca->getAutorMarginTopPt() ?? round(22 * $escalaY, 1),
             'tituloMarginTopPt' => $biblioteca->getTituloMarginTopPt() ?? round(12 * $escalaY, 1),
-            'derechaAnchoPt' => round(90 * $escalaX, 1) + ($biblioteca->getPrefijoDesplazamientoXPt() ?? 0.0),
+            'derechaAnchoPt' => $this->calcularAnchoDerecha($biblioteca->getPrefijoDesplazamientoXPt() ?? 0.0, $escalaX),
         ]);
 
         $options = new Options();
@@ -60,6 +63,18 @@ class TarjetaPdfBuilder
         $dompdf->render();
 
         return $dompdf->output();
+    }
+
+    /**
+     * Ancho de la caja de prefijo+adquisición (derecha, alineada a la derecha), aplicando el
+     * desplazamiento configurado pero sin dejar que su borde derecho rebase el de la tarjeta.
+     */
+    private function calcularAnchoDerecha(float $desplazamientoPt, float $escalaX): float
+    {
+        $anchoBase = 90 * $escalaX;
+        $anchoMaximo = (107 * $escalaX) - self::MARGEN_SEGURIDAD_DERECHA_PT;
+
+        return round(min($anchoBase + $desplazamientoPt, $anchoMaximo), 1);
     }
 
     private function calcularFontSizeAutor(string $autor, float $anchoDisponiblePt): float
