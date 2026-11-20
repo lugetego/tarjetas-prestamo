@@ -48,6 +48,7 @@ class TarjetaPdfBuilder
             'autorFontSizes' => $autorFontSizes,
             'autorMarginTopPt' => $biblioteca->getAutorMarginTopPt() ?? round(22 * $escalaY, 1),
             'tituloMarginTopPt' => $biblioteca->getTituloMarginTopPt() ?? round(12 * $escalaY, 1),
+            'derechaAnchoPt' => round(90 * $escalaX, 1) + ($biblioteca->getPrefijoDesplazamientoXPt() ?? 0.0),
         ]);
 
         $options = new Options();

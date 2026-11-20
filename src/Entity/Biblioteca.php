@@ -39,6 +39,9 @@ class Biblioteca
     #[ORM\Column(nullable: true)]
     private ?float $tituloMarginTopPt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $prefijoDesplazamientoXPt = null;
+
     public function __construct()
     {
         $this->creadoEn = new \DateTimeImmutable();
@@ -122,6 +125,18 @@ class Biblioteca
     public function setTituloMarginTopPt(?float $tituloMarginTopPt): static
     {
         $this->tituloMarginTopPt = $tituloMarginTopPt;
+
+        return $this;
+    }
+
+    public function getPrefijoDesplazamientoXPt(): ?float
+    {
+        return $this->prefijoDesplazamientoXPt;
+    }
+
+    public function setPrefijoDesplazamientoXPt(?float $prefijoDesplazamientoXPt): static
+    {
+        $this->prefijoDesplazamientoXPt = $prefijoDesplazamientoXPt;
 
         return $this;
     }
