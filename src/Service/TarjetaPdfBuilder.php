@@ -19,8 +19,13 @@ class TarjetaPdfBuilder
     /** Ancho promedio estimado de un carácter en negritas, como fracción del tamaño de fuente. */
     private const FACTOR_ANCHO_CARACTER = 0.5;
 
-    /** Margen de seguridad (pt, a escala de referencia) para que el prefijo+adquisición nunca rebase el borde de la tarjeta. */
-    private const MARGEN_SEGURIDAD_DERECHA_PT = 3.0;
+    /**
+     * Margen de seguridad (pt, a escala de referencia) para que el prefijo+adquisición nunca rebase
+     * el borde de la tarjeta. Más grande que un simple margen de diseño: muchas impresoras no
+     * imprimen hasta el borde exacto del papel, así que deja también colchón para ese margen
+     * no imprimible del lado del hardware.
+     */
+    private const MARGEN_SEGURIDAD_DERECHA_PT = 10.0;
 
     public function __construct(private readonly Environment $twig)
     {
