@@ -19,6 +19,7 @@ class TarjetaPdfBuilder
         $biblioteca = $remision->getBiblioteca();
         $anchoPt = $biblioteca->getAnchoTarjetaPt();
         $altoPt = $biblioteca->getAltoTarjetaPt();
+        $escalaY = $altoPt / Biblioteca::ALTO_TARJETA_PT_DEFAULT;
 
         $html = $this->twig->render('tarjeta/pdf.html.twig', [
             'remision' => $remision,
@@ -26,7 +27,9 @@ class TarjetaPdfBuilder
             'anchoPt' => $anchoPt,
             'altoPt' => $altoPt,
             'escalaX' => $anchoPt / Biblioteca::ANCHO_TARJETA_PT_DEFAULT,
-            'escalaY' => $altoPt / Biblioteca::ALTO_TARJETA_PT_DEFAULT,
+            'escalaY' => $escalaY,
+            'autorMarginTopPt' => $biblioteca->getAutorMarginTopPt() ?? round(22 * $escalaY, 1),
+            'tituloMarginTopPt' => $biblioteca->getTituloMarginTopPt() ?? round(12 * $escalaY, 1),
         ]);
 
         $options = new Options();

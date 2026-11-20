@@ -33,6 +33,12 @@ class Biblioteca
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $prefijoAdquisicionPredeterminado = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $autorMarginTopPt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $tituloMarginTopPt = null;
+
     public function __construct()
     {
         $this->creadoEn = new \DateTimeImmutable();
@@ -92,6 +98,30 @@ class Biblioteca
     public function setPrefijoAdquisicionPredeterminado(?string $prefijoAdquisicionPredeterminado): static
     {
         $this->prefijoAdquisicionPredeterminado = $prefijoAdquisicionPredeterminado;
+
+        return $this;
+    }
+
+    public function getAutorMarginTopPt(): ?float
+    {
+        return $this->autorMarginTopPt;
+    }
+
+    public function setAutorMarginTopPt(?float $autorMarginTopPt): static
+    {
+        $this->autorMarginTopPt = $autorMarginTopPt;
+
+        return $this;
+    }
+
+    public function getTituloMarginTopPt(): ?float
+    {
+        return $this->tituloMarginTopPt;
+    }
+
+    public function setTituloMarginTopPt(?float $tituloMarginTopPt): static
+    {
+        $this->tituloMarginTopPt = $tituloMarginTopPt;
 
         return $this;
     }
