@@ -42,6 +42,9 @@ class Biblioteca
     #[ORM\Column(nullable: true)]
     private ?float $prefijoDesplazamientoXPt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $sistemaTopPt = null;
+
     public function __construct()
     {
         $this->creadoEn = new \DateTimeImmutable();
@@ -137,6 +140,18 @@ class Biblioteca
     public function setPrefijoDesplazamientoXPt(?float $prefijoDesplazamientoXPt): static
     {
         $this->prefijoDesplazamientoXPt = $prefijoDesplazamientoXPt;
+
+        return $this;
+    }
+
+    public function getSistemaTopPt(): ?float
+    {
+        return $this->sistemaTopPt;
+    }
+
+    public function setSistemaTopPt(?float $sistemaTopPt): static
+    {
+        $this->sistemaTopPt = $sistemaTopPt;
 
         return $this;
     }

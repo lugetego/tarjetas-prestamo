@@ -57,6 +57,7 @@ class TarjetaPdfBuilder
             'autorMarginTopPt' => $biblioteca->getAutorMarginTopPt() ?? round(22 * $escalaY, 1),
             'tituloMarginTopPt' => $biblioteca->getTituloMarginTopPt() ?? round(12 * $escalaY, 1),
             'derechaAnchoPt' => $this->calcularAnchoDerecha($biblioteca->getPrefijoDesplazamientoXPt() ?? 0.0, $escalaX),
+            'sistemaTopPt' => $biblioteca->getSistemaTopPt() ?? round(338.5 * $escalaY, 1),
         ]);
 
         $options = new Options();
