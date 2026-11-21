@@ -46,8 +46,8 @@
         }
         .autor {
             font-weight: bold;
-            margin-top: {{ autorMarginTopPt }}pt;
             width: {{ anchoAutorPt }}pt;
+            line-height: 1.15;
             overflow-wrap: break-word;
         }
         .titulo {
@@ -72,7 +72,7 @@
             <div class="izquierda">{{ tarjeta.clasificacion }}</div>
             <div class="derecha">{{ remision.prefijoAdquisicion }}-{{ tarjeta.adquision }}</div>
         </div>
-        <div class="autor" style="font-size: {{ autorFontSizes[tarjeta.id] }}pt;">{{ tarjeta.autor }}</div>
+        <div class="autor" style="font-size: {{ autorFontSizes[tarjeta.id] }}pt; margin-top: {{ autorMarginTops[tarjeta.id] }}pt;">{{ tarjeta.autor }}</div>
         <div class="titulo">{{ tarjeta.titulo }}</div>
         <div class="sistema">{{ tarjeta.sistema }}</div>
     </div>

@@ -19,6 +19,9 @@ class TarjetaPdfBuilder
     /** Ancho promedio estimado de un carácter en negritas, como fracción del tamaño de fuente. */
     private const FACTOR_ANCHO_CARACTER = 0.5;
 
+    /** Altura de línea del autor, como múltiplo de su tamaño de fuente (debe coincidir con el CSS). */
+    private const ALTURA_LINEA_AUTOR = 1.15;
+
     /**
      * Margen de seguridad (pt, a escala de referencia) para que el prefijo+adquisición nunca rebase
      * el borde de la tarjeta. Más grande que un simple margen de diseño: muchas impresoras no
@@ -40,9 +43,14 @@ class TarjetaPdfBuilder
         $escalaY = $altoPt / Biblioteca::ALTO_TARJETA_PT_DEFAULT;
         $anchoAutorPt = round(179 * $escalaX, 1);
 
+        $autorMarginTopBase = $biblioteca->getAutorMarginTopPt() ?? round(22 * $escalaY, 1);
+
         $autorFontSizes = [];
+        $autorMarginTops = [];
         foreach ($remision->getTarjetas() as $tarjeta) {
-            $autorFontSizes[$tarjeta->getId()] = $this->calcularFontSizeAutor($tarjeta->getAutor(), $anchoAutorPt);
+            $fontSize = $this->calcularFontSizeAutor($tarjeta->getAutor(), $anchoAutorPt);
+            $autorFontSizes[$tarjeta->getId()] = $fontSize;
+            $autorMarginTops[$tarjeta->getId()] = $this->calcularMargenTopAutor($tarjeta->getAutor(), $anchoAutorPt, $fontSize, $autorMarginTopBase);
         }
 
         $html = $this->twig->render('tarjeta/pdf.html.twig', [
@@ -54,7 +62,7 @@ class TarjetaPdfBuilder
             'escalaY' => $escalaY,
             'anchoAutorPt' => $anchoAutorPt,
             'autorFontSizes' => $autorFontSizes,
-            'autorMarginTopPt' => $biblioteca->getAutorMarginTopPt() ?? round(22 * $escalaY, 1),
+            'autorMarginTops' => $autorMarginTops,
             'tituloMarginTopPt' => $biblioteca->getTituloMarginTopPt() ?? round(12 * $escalaY, 1),
             'derechaAnchoPt' => $this->calcularAnchoDerecha($biblioteca->getPrefijoDesplazamientoXPt() ?? 0.0, $escalaX),
             'sistemaTopPt' => $biblioteca->getSistemaTopPt() ?? round(338.5 * $escalaY, 1),
@@ -95,5 +103,33 @@ class TarjetaPdfBuilder
         }
 
         return min(self::TAMANOS_FUENTE_AUTOR);
+    }
+
+    /**
+     * Cuántas líneas ocupará el autor con el tamaño de fuente ya elegido.
+     */
+    private function calcularLineasAutor(string $autor, float $anchoDisponiblePt, float $tamanoFuente): int
+    {
+        $longitud = mb_strlen($autor);
+        $caracteresPorLinea = (int) floor($anchoDisponiblePt / (self::FACTOR_ANCHO_CARACTER * $tamanoFuente));
+
+        if ($caracteresPorLinea <= 0) {
+            return self::MAX_LINEAS_AUTOR;
+        }
+
+        return min(self::MAX_LINEAS_AUTOR, max(1, (int) ceil($longitud / $caracteresPorLinea)));
+    }
+
+    /**
+     * Margen superior del autor, recorrido hacia arriba cuando ocupa más de una línea, para que
+     * su última línea siempre termine en la misma posición que un autor de una sola línea — y así
+     * no invada la línea impresa que separa AUTOR de TÍTULO.
+     */
+    private function calcularMargenTopAutor(string $autor, float $anchoDisponiblePt, float $tamanoFuente, float $margenBase): float
+    {
+        $lineas = $this->calcularLineasAutor($autor, $anchoDisponiblePt, $tamanoFuente);
+        $alturaLineaPt = $tamanoFuente * self::ALTURA_LINEA_AUTOR;
+
+        return round(max(0.0, $margenBase - ($lineas - 1) * $alturaLineaPt), 1);
     }
 }
