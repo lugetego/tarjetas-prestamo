@@ -30,6 +30,18 @@ class TarjetaPdfBuilder
      */
     private const MARGEN_SEGURIDAD_DERECHA_PT = 10.0;
 
+    /**
+     * Igual que MARGEN_SEGURIDAD_DERECHA_PT pero para el borde inferior: evita que el número de
+     * sistema quede tan cerca del borde que la impresora lo recorte.
+     */
+    private const MARGEN_SEGURIDAD_INFERIOR_PT = 10.0;
+
+    /** Tamaño de fuente (pt) del número de sistema, a escala de referencia (debe coincidir con el CSS). */
+    private const TAMANO_FUENTE_SISTEMA = 8.0;
+
+    /** Altura de línea del número de sistema, como múltiplo de su tamaño de fuente. */
+    private const ALTURA_LINEA_SISTEMA = 1.15;
+
     public function __construct(private readonly Environment $twig)
     {
     }
@@ -65,7 +77,7 @@ class TarjetaPdfBuilder
             'autorMarginTops' => $autorMarginTops,
             'tituloMarginTopPt' => $biblioteca->getTituloMarginTopPt() ?? round(12 * $escalaY, 1),
             'derechaAnchoPt' => $this->calcularAnchoDerecha($biblioteca->getPrefijoDesplazamientoXPt() ?? 0.0, $escalaX),
-            'sistemaTopPt' => $biblioteca->getSistemaTopPt() ?? round(338.5 * $escalaY, 1),
+            'sistemaTopPt' => $this->calcularTopSistema($biblioteca->getSistemaTopPt() ?? round(338.5 * $escalaY, 1), $altoPt, $escalaY),
         ]);
 
         $options = new Options();
@@ -89,6 +101,18 @@ class TarjetaPdfBuilder
         $anchoMaximo = (107 * $escalaX) - self::MARGEN_SEGURIDAD_DERECHA_PT;
 
         return round(min($anchoBase + $desplazamientoPt, $anchoMaximo), 1);
+    }
+
+    /**
+     * Posición vertical del número de sistema, aplicando el valor configurado pero sin dejar que
+     * su línea rebase el borde inferior de la tarjeta.
+     */
+    private function calcularTopSistema(float $topPt, float $altoPt, float $escalaY): float
+    {
+        $alturaLineaPt = self::TAMANO_FUENTE_SISTEMA * $escalaY * self::ALTURA_LINEA_SISTEMA;
+        $topMaximo = $altoPt - self::MARGEN_SEGURIDAD_INFERIOR_PT - $alturaLineaPt;
+
+        return round(min($topPt, $topMaximo), 1);
     }
 
     private function calcularFontSizeAutor(string $autor, float $anchoDisponiblePt): float
